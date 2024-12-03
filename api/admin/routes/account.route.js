@@ -4,9 +4,9 @@ const authMiddleWare = require("../middlewares/auth.middleware")
 
 const controller = require("../controller/account.controller")
 
-router.post("/login", controller.login)
-router.post("/checkToken", controller.checkToken)
-router.get('/verify', authMiddleWare.requireAuth, controller.verifyAccount);
+router.post("/admin/accounts/login", controller.login)
+router.post("/admin/accounts/checkToken", controller.checkToken)
+router.get('/admin/accounts/verify', authMiddleWare.requireAuth, controller.verifyAccount);
 // router.post("/checkToken", controller.checkToken)
 
 module.exports = router;
