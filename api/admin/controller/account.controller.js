@@ -57,38 +57,38 @@ module.exports.checkToken = async (req, res) => {
   }
 }
 
-module.exports.verifyAccount = async (req, res) => {
-  try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-      return res.status(401).json({ message: "Vui lòng gửi kèm token!" });
-    }
+// module.exports.verifyAccount = async (req, res) => {
+//   try {
+//     const authHeader = req.headers.authorization;
+//     if (!authHeader) {
+//       return res.status(401).json({ message: "Vui lòng gửi kèm token!" });
+//     }
 
-    const token = authHeader.split(" ")[1]; // 'Bearer token_value'
+//     const token = authHeader.split(" ")[1]; // 'Bearer token_value'
 
-    const account = await Account.findOne({ token: token, deleted: false }).select("-password");
+//     const account = await Account.findOne({ token: token, deleted: false }).select("-password");
 
-    if (!account) {
-      return res.status(401).json({ message: "Token không hợp lệ hoặc tài khoản đã bị xóa!" });
-    }
+//     if (!account) {
+//       return res.status(401).json({ message: "Token không hợp lệ hoặc tài khoản đã bị xóa!" });
+//     }
 
-    // Tìm role tương ứng của tài khoản
-    const role = await Role.findOne({ _id: account.role_id, deleted: false });
+//     // Tìm role tương ứng của tài khoản
+//     const role = await Role.findOne({ _id: account.role_id, deleted: false });
 
-    res.json({
-      code: 200,
-      message: "Xác nhận tài khoản thành công!",
-      account: {
-        _id: account._id,
-        avatar: account.avatar,
-        email: account.email,
-        role: role ? role.name : null,
-        permissions: role ? role.permissions : null
-      }
-    });
+//     res.json({
+//       code: 200,
+//       message: "Xác nhận tài khoản thành công!",
+//       account: {
+//         _id: account._id,
+//         avatar: account.avatar,
+//         email: account.email,
+//         role: role ? role.name : null,
+//         permissions: role ? role.permissions : null
+//       }
+//     });
 
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Lỗi hệ thống, vui lòng thử lại sau!" });
-  }
-};
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Lỗi hệ thống, vui lòng thử lại sau!" });
+//   }
+// };
