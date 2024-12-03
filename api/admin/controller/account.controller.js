@@ -1,38 +1,57 @@
 const Admin = require('../../../models/admin.model'); // Đảm bảo bạn đã import mô hình Admin đúng
+const md5 = require("md5")
 
 module.exports.login = async (req, res) => {
-  const username = req.body.username
-  const password = req.body.password
+    try {
+        const { username, password } = req.body;
 
-  const user = await Admin.findOne({
-    username: username,
-  })
+        // Kiểm tra dữ liệu đầu vào
+        if (!username || !password) {
+            return res.status(400).json({
+                code: 400,
+                message: "Vui lòng nhập đầy đủ username và password!",
+            });
+        }
 
-  if (!user) {
-    res.json({
-      code: 400,
-      message: "Username không tồn tại!",
-    })
+        // Tìm Admin theo username
+        const user = await Admin.findOne({
+            where: { username: username },
+        });
 
-    return;
-  }
-  if (md5(password) !== user.password) {
-    res.json({
-      code: 400,
-      message: "Sai mật khẩu!",
-    })
-    return;
-  }
+        if (!user) {
+            return res.status(400).json({
+                code: 400,
+                message: "Username không tồn tại!",
+            });
+        }
 
-  const token = user.token
-  res.cookie("token", token)
+        // So sánh mật khẩu hash
+        if (md5(password) !== user.password_hash) {
+            return res.status(400).json({
+                code: 400,
+                message: "Sai mật khẩu!",
+            });
+        }
 
-  res.json({
-    code: 200,
-    message: "Đăng nhập thành công!",
-    token: token
-  })
-}
+        // Đăng nhập thành công
+        const token = user.token; // Lấy token từ DB
+        res.cookie("token", token); // Lưu token vào cookie
+
+        res.status(200).json({
+            code: 200,
+            message: "Đăng nhập thành công!",
+            token: token,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            code: 500,
+            message: "Đã xảy ra lỗi trong quá trình xử lý!",
+            error: error.message,
+        });
+    }
+};
+
 
 module.exports.checkToken = async (req, res) => {
   const token = req.headers['authorization']?.split(' ')[1];
