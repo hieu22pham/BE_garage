@@ -1,7 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const connectDB = require("./config/database.route");
+const {connectDB} = require("./config/connectDB");
+const routesAdmin = require("./api/admin/routes/index.route")
 const cors = require("cors");
 const http = require("http");
 require("dotenv").config();
@@ -29,6 +30,8 @@ app.use(bodyParser.json());
 app.use(cors({
 }));
 app.use(cookieParser());
+
+routesAdmin(app);
 
 // Định nghĩa các routes
 
