@@ -1,18 +1,17 @@
 const Admin = require('../../../models/admin.model'); // Đảm bảo bạn đã import mô hình Admin đúng
 
 module.exports.login = async (req, res) => {
-  const email = req.body.email
+  const username = req.body.username
   const password = req.body.password
 
   const user = await Admin.findOne({
-    email: email,
-    deleted: false
+    username: username,
   })
 
   if (!user) {
     res.json({
       code: 400,
-      message: "Email không tồn tại!",
+      message: "Username không tồn tại!",
     })
 
     return;
