@@ -2,6 +2,11 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/connectDB'); // Import sequelize instance
 
 const Appointment = sequelize.define('Appointment', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true, // Đảm bảo auto tăng
+        primaryKey: true,
+      },    
     customer_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -15,9 +20,10 @@ const Appointment = sequelize.define('Appointment', {
         allowNull: false,
     },
     service_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
     },
+   
     appointment_date: {
         type: DataTypes.DATE,
         allowNull: false,

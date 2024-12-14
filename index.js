@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const {connectDB} = require("./config/connectDB");
 const routesAdmin = require("./api/admin/routes/index.route")
 const cors = require("cors");
+const socketIo = require("socket.io");
 const http = require("http");
 require("dotenv").config();
 
@@ -12,6 +13,15 @@ const port = process.env.PORT || 8080;
 
 const server = http.createServer(app);
 
+const io = socketIo(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
+  },
+  transports: ['polling'], // Chỉ sử dụng long polling thay vì WebSocket
+});
 // Kết nối đến cơ sở dữ liệu
 // database.connect()
 //   .then(() => {

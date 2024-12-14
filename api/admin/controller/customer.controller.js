@@ -52,6 +52,27 @@ module.exports.createCustomer = async (req, res) => {
     }
 };
 
+module.exports.updateCustomer = async (req, res) => {
+    const { id } = req.params; // Lấy ID từ URL
+    const { full_name } = req.body; // Lấy dữ liệu từ body
+  
+    try {
+      // Kiểm tra sự tồn tại của khách hàng
+      const customer = await Customer.findByPk(id);
+      if (!customer) {
+        return res.status(404).json({ code: 404, message: "Khách hàng không tồn tại" });
+      }
+  
+      // Cập nhật thông tin
+      await customer.update({ full_name });
+  
+      res.status(200).json({ code: 200, message: "Cập nhật khách hàng thành công", data: customer });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ code: 500, message: "Lỗi khi cập nhật khách hàng" });
+    }
+  };
+
 module.exports.getCustomerById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -62,8 +83,9 @@ module.exports.getCustomerById = async (req, res) => {
                 message: "ID khách hàng là bắt buộc!",
             });
         }
-
+        //find by primary key
         const customer = await Customer.findByPk(id);
+        // const customer = await Customer.findOne({id: id});
 
         if (!customer) {
             return res.status(404).json({
@@ -154,7 +176,7 @@ module.exports.deleteCustomer = async (req, res) => {
 
         // Cập nhật các bản ghi trong bảng appointments, gán customer_id = NULL
         await Appointment.update(
-            { customer_id: null },  // Hoặc gán một giá trị mặc định
+            { customer_id: 0 },  // Hoặc gán một giá trị mặc định
             { where: { customer_id: id } }
         );
 

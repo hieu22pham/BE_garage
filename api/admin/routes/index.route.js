@@ -3,6 +3,8 @@ const serviceRouter = require('./service.route')
 const customerRouter = require('./customer.route')
 const garageRouter = require('./garage.route')
 const technicianRouter = require('./technician.route')
+const appointmentRouter = require('./appointment.route')
+const NotificationRouter = require('./notification.route')
 
 module.exports = (app) => {
 
@@ -11,4 +13,6 @@ module.exports = (app) => {
   app.use('', customerRouter)
   app.use('', garageRouter)
   app.use('', technicianRouter)
+  app.use('', appointmentRouter)
+  app.use('', NotificationRouter)
 }

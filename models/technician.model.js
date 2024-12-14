@@ -15,6 +15,10 @@ const Technician = sequelize.define('Technician', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    thumbnail: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
     specialty: {
         type: DataTypes.STRING,
         allowNull: true,

@@ -5,6 +5,7 @@ const sequelize = new Sequelize('garage_management', 'root', '', {
     host: '127.0.0.1',
     dialect: 'mysql',
     logging: false,
+    timezone: '+07:00'
 });
 
 // Function to connect to the database
